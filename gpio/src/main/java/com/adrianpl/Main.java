@@ -6,7 +6,7 @@ public class Main {
         ModbusTCPServer modbusTCPServer = new ModbusTCPServer();
 
         GpioController gpioController = new GpioController(snmpController,
-                modbusTCPServer);
+                modbusTCPServer, 24);
         gpioController.testGpio();
     }
 }

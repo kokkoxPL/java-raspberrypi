@@ -37,6 +37,7 @@ public class SnmpController {
 
     public void sendResponse() throws Exception {
         ResponseEvent<Address> response = snmp.send(pdu, target);
+
         if (response.getResponse() == null) {
             System.out.println("No response");
         } else {

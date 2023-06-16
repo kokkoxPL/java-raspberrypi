@@ -8,6 +8,7 @@ import org.snmp4j.PDU;
 import org.snmp4j.Snmp;
 import org.snmp4j.TransportMapping;
 import org.snmp4j.mp.SnmpConstants;
+import org.snmp4j.mp.StateReference;
 import org.snmp4j.mp.StatusInformation;
 import org.snmp4j.smi.Address;
 import org.snmp4j.smi.OID;
@@ -27,6 +28,7 @@ class Main {
             target.setVersion(SnmpConstants.version2c);
 
             snmp.addCommandResponder(new CommandResponder() {
+                @SuppressWarnings("rawtypes")
                 public void processPdu(CommandResponderEvent event) {
                     PDU request = event.getPDU();
                     if (request != null) {
@@ -38,15 +40,14 @@ class Main {
                         response.setErrorIndex(0);
                         response.setErrorStatus(0);
                         response.setRequestID(request.getRequestID());
-                        response.add(
-                                new VariableBinding(new OID("1.3.6.1.2.1.1.1.0"),
-                                        new OctetString("New response just dropped!")));
+                        response.add(new VariableBinding(new OID("1.3.6.1.2.1.1.1.0"),
+                                new OctetString("New response just dropped!")));
 
                         try {
                             event.getMessageDispatcher().returnResponsePdu(event.getMessageProcessingModel(),
                                     event.getSecurityModel(), event.getSecurityName(), event.getSecurityLevel(),
-                                    response,
-                                    event.getMaxSizeResponsePDU(), event.getStateReference(), new StatusInformation());
+                                    response, event.getMaxSizeResponsePDU(),
+                                    (StateReference<?>) event.getStateReference(), new StatusInformation());
                             System.out.println("Sent SNMP response: " + response.toString());
                         } catch (MessageException e) {
                             e.printStackTrace();

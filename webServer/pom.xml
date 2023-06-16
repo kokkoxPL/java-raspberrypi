@@ -11,9 +11,9 @@
 	</parent>
 
 	<groupId>com.adrianpl</groupId>
-	<artifactId>spring</artifactId>
+	<artifactId>web-server</artifactId>
 	<version>1.0</version>
-	<name>spring</name>
+	<name>Web Server</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

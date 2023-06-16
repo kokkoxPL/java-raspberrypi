@@ -3,7 +3,7 @@ package com.adrianpl;
 import de.re.easymodbus.server.ModbusServer;
 
 public class ModbusTCPServer {
-    ModbusServer modbusServer;
+    private ModbusServer modbusServer;
 
     public ModbusTCPServer() {
         modbusServer = new ModbusServer();
@@ -15,19 +15,19 @@ public class ModbusTCPServer {
         }
     }
 
-    public void writeCoils(boolean coil) {
-        modbusServer.coils[1] = coil;
+    public void writeCoils(int position, boolean value) {
+        modbusServer.coils[position + 1] = value;
     }
 
-    public void writeDiscreteInputs(boolean inputs) {
-        modbusServer.discreteInputs[1] = inputs;
+    public void writeDiscreteInputs(int position, boolean value) {
+        modbusServer.discreteInputs[position + 1] = value;
     }
 
-    public void writeHoldingRegisters(int registers) {
-        modbusServer.holdingRegisters[1] = registers;
+    public void writeHoldingRegisters(int position, int value) {
+        modbusServer.holdingRegisters[position + 1] = value;
     }
 
-    public void writeInputRegisters(int inputRegisters) {
-        modbusServer.inputRegisters[1] = inputRegisters;
+    public void writeInputRegisters(int position, int value) {
+        modbusServer.inputRegisters[position + 1] = value;
     }
 }
