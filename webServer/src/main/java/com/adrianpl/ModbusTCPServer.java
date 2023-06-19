@@ -15,10 +15,6 @@ public class ModbusTCPServer {
         }
     }
 
-    // wartości w modbusie za pomocą paczki EasyModbus zaczynają
-    // od 1 ale tylko w serwerze, bo w kliencie zaczynają się od 0
-    // dziwne
-
     public void writeCoils(int position, boolean value) {
         modbusServer.coils[position + 1] = value;
     }

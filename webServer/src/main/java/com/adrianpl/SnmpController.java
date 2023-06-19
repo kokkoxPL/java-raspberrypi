@@ -23,7 +23,7 @@ public class SnmpController {
 
     public SnmpController() throws Exception {
         pdu = new PDU();
-        pdu.add(new VariableBinding(new OID("1.3.6.1.2.1.1.1")));
+        pdu.add(new VariableBinding(new OID("1.3.6.1.2.1.1.2")));
         pdu.setType(PDU.GETNEXT);
 
         target = new CommunityTarget<Address>();

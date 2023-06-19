@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.servlet.http.HttpServletRequest;
 
 @SpringBootApplication
 @RestController
@@ -15,8 +15,9 @@ public class Application {
 	}
 
 	@PostMapping("/test")
-	public ResponseEntity<String> hello(HttpServletRequest request) {
-		String str = String.format("Hello %s!", request.getParameter("value"));
+	public ResponseEntity<String> test(@RequestBody String value) {
+		System.out.println(value);
+		String str = String.format("Hello %s!", value);
 		return ResponseEntity.ok(str);
 	}
 }
