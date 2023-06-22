@@ -16,8 +16,9 @@ public class Application {
 
 	@PostMapping("/test")
 	public ResponseEntity<String> test(@RequestBody String value) {
-		System.out.println(value);
-		String str = String.format("Hello %s!", value);
-		return ResponseEntity.ok(str);
+		String str[] = value.split("=");
+		System.out.println(str);
+		String hello = String.format("Hello %s!", str[1]);
+		return ResponseEntity.ok(hello);
 	}
 }

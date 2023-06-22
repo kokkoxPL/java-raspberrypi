@@ -3,14 +3,6 @@ package com.adrianpl;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Executors;
 
 import com.pi4j.Pi4J;
@@ -38,39 +30,14 @@ public class GpioController {
         this.gpioAddress = gpioAddress;
     }
 
-    private static HttpRequest.BodyPublisher buildFormDataFromMap(Map<Object, Object> data) {
-        var builder = new StringBuilder();
-        for (Map.Entry<Object, Object> entry : data.entrySet()) {
-            if (builder.length() > 0) {
-                builder.append("&");
-            }
-            builder.append(URLEncoder.encode(entry.getKey().toString(), StandardCharsets.UTF_8));
-            builder.append("=");
-            builder.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
-        }
-        System.out.println(builder.toString());
-        return HttpRequest.BodyPublishers.ofString(builder.toString());
-    }
-
-    public void sendPostRequest(String value) throws IOException, InterruptedException {
-        var values = new HashMap<Object, Object>();
-        values.put("value", value);
-
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8081/test"))
-                .header("Content-Type", "application/json")
-                .POST(buildFormDataFromMap(values))
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        console.box(response.body());
-    }
-
     public void restart() throws IOException, InterruptedException {
         console.box("RESTART");
-        sendPostRequest("0");
+
+        PostSender postSender = new PostSender(console);
+        postSender.sendPostRequest("World");
+
         snmpController.sendResponse();
+
         modbusTCPServer.writeHoldingRegisters(0, 123);
     }
 
