@@ -2,7 +2,7 @@ package com.adrianpl;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.Executors;
 
 import com.pi4j.Pi4J;
@@ -12,33 +12,40 @@ import com.pi4j.io.gpio.digital.DigitalState;
 import com.pi4j.util.Console;
 
 public class GpioController {
-    final int TIME_TO_START_TOGGLE = 1000;
-    final int TIME_TO_START_CHECK = 5000;
-    final int TIME_TO_TOGGLE = 8000;
-    final int TIME_TO_CHECK = 5000;
-    final Console console;
+    private final int TIME_TO_START_TOGGLE = 1000;
+    private final int TIME_TO_START_CHECK = 5000;
+    private final int TIME_TO_TOGGLE = 8000;
+    private final int TIME_TO_CHECK = 5000;
+    private final Console console = new Console();
 
-    private SnmpController snmpController;
-    private ModbusTCPServer modbusTCPServer;
-    private int gpioAddress;
+    private final int gpioAddress;
+    private final SnmpController snmpController;
+    private final ModbusTCPServer modbusTCPServer;
+
     private boolean didGpioStateChange = false;
 
     public GpioController(SnmpController snmpController, ModbusTCPServer modbusTCPServer, int gpioAddress) {
-        this.console = new Console();
         this.snmpController = snmpController;
         this.modbusTCPServer = modbusTCPServer;
         this.gpioAddress = gpioAddress;
     }
 
-    public void restart() throws IOException, InterruptedException {
+    public void restart() {
         console.box("RESTART");
 
-        PostSender postSender = new PostSender(console);
-        postSender.sendPostRequest("World");
-
-        snmpController.sendResponse();
+        var map = new HashMap<String, String>();
+        map.put("restart", "true");
+        map.put("error", "true");
 
         modbusTCPServer.writeHoldingRegisters(0, 123);
+        snmpController.sendResponse();
+
+        try {
+            var body = PostSender.sendPostRequest(map);
+            console.print(body);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void testGpio() {

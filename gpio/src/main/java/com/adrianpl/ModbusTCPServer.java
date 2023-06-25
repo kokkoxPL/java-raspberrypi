@@ -1,5 +1,7 @@
 package com.adrianpl;
 
+import java.io.IOException;
+
 import de.re.easymodbus.server.ModbusServer;
 
 public class ModbusTCPServer {
@@ -10,8 +12,9 @@ public class ModbusTCPServer {
         modbusServer.setPort(502);
         try {
             modbusServer.Listen();
-        } catch (Exception e) {
-            System.out.println(e.toString());
+        } catch (IOException e) {
+            System.out.println("There was problem with modbus server");
+            e.printStackTrace();
         }
     }
 

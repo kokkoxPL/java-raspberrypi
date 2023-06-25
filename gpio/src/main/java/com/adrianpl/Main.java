@@ -1,7 +1,7 @@
 package com.adrianpl;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         SnmpController snmpController = new SnmpController();
         ModbusTCPServer modbusTCPServer = new ModbusTCPServer();
 
