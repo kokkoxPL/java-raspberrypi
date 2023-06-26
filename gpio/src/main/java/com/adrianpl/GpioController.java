@@ -34,21 +34,20 @@ public class GpioController {
         console.box("RESTART");
 
         var map = new HashMap<String, String>();
-        map.put("restart", "true");
         map.put("error", "true");
 
         modbusTCPServer.writeHoldingRegisters(0, 123);
         snmpController.sendResponse();
 
         try {
-            var body = PostSender.sendPostRequest(map);
+            var body = new PostSender().sendPostRequest(map);
             console.print(body);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void testGpio() {
+    public void startGpio() {
         console.title("<-- The GPIO Project -->");
 
         Context pi4j = Pi4J.newAutoContext();
@@ -71,6 +70,16 @@ public class GpioController {
             if (didGpioStateChange) {
                 didGpioStateChange = false;
                 console.box("OK");
+
+                var map = new HashMap<String, String>();
+                map.put("error", "false");
+
+                try {
+                    var body = new PostSender().sendPostRequest(map);
+                    console.print(body);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return;
             }
 
