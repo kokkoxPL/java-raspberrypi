@@ -1,12 +1,20 @@
-gpio - program 1
-webServer- program 2
-modbusClient - program do testowania modbusa
-snmpClient - program do testowania snmp
+# Program do testowania gpio w raspberry pi
 
-biblioteka do dodania przez maven:
-```mvn install:install-file -Dfile=./lib/EasyModbusJava.jar -DgroupId=de.re.easymodbus -DartifactId=modbus -Dversion=1.0 -Dpackaging=jar```
+## Foldery:
+
+- Gpio - główny program do testowania gpio
+- WebServer- program do komunikacji z głównym programem
+- ModbusClient - program do testowania modbusa
+- SnmpServer - program do testowania snmp
+
+### Gpio, WebServer, ModbusClient używają biblioteki którą można dodać do mavena za pomocą tego skryptu (skrypt uruchom będąc w tym folderze):
+
+`mvn install:install-file -Dfile=./lib/EasyModbusJava.jar -DgroupId=de.re.easymodbus -DartifactId=modbus -Dversion=1.0 -Dpackaging=jar`
 
 każdy program kompiluje się za pomocą maven
-```mvn package```
+
+`mvn package`
+
 i uruchamia się:
-```sudo java -jar $plik```
+
+`sudo java -jar target/$plik`
