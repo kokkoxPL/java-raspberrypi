@@ -12,22 +12,32 @@ import com.pi4j.io.gpio.digital.DigitalState;
 import com.pi4j.util.Console;
 
 public class GpioController {
-    private final int TIME_TO_START_TOGGLE = 1000;
-    private final int TIME_TO_START_CHECK = 5000;
-    private final int TIME_TO_TOGGLE = 8000;
-    private final int TIME_TO_CHECK = 5000;
-    private final Console console = new Console();
+    private final int TIME_TO_START_TOGGLE;
+    private final int TIME_TO_START_CHECK;
+    private final int TIME_TO_TOGGLE;
+    private final int TIME_TO_CHECK;
+    private final int GPIO_ADDRESS;
+    private final String WEB_SERVER_URL;
 
-    private final int gpioAddress;
-    private final SnmpController snmpController;
-    private final ModbusTCPServer modbusTCPServer;
+    private SnmpController snmpController;
+    private ModbusTCPServer modbusTCPServer;
 
+    private Console console = new Console();
     private boolean didGpioStateChange = false;
 
-    public GpioController(SnmpController snmpController, ModbusTCPServer modbusTCPServer, int gpioAddress) {
+    // Wiem to jest brzydkie
+    public GpioController(SnmpController snmpController, ModbusTCPServer modbusTCPServer, int GPIO_ADDRESS,
+            int TIME_TO_CHECK, int TIME_TO_START_CHECK, int TIME_TO_START_TOGGLE, int TIME_TO_TOGGLE,
+            String WEB_SERVER_URL) {
+        this.GPIO_ADDRESS = GPIO_ADDRESS;
+        this.TIME_TO_CHECK = TIME_TO_CHECK;
+        this.TIME_TO_START_CHECK = TIME_TO_START_CHECK;
+        this.TIME_TO_START_TOGGLE = TIME_TO_START_TOGGLE;
+        this.TIME_TO_TOGGLE = TIME_TO_TOGGLE;
+        this.WEB_SERVER_URL = WEB_SERVER_URL;
+
         this.snmpController = snmpController;
         this.modbusTCPServer = modbusTCPServer;
-        this.gpioAddress = gpioAddress;
     }
 
     public void restart() {
@@ -40,10 +50,10 @@ public class GpioController {
         snmpController.sendResponse();
 
         try {
-            var body = new PostSender().sendPostRequest(map);
+            var body = new PostSender().sendPostRequest(WEB_SERVER_URL, map);
             console.print(body);
         } catch (Exception e) {
-            e.printStackTrace();
+            console.print(e);
         }
     }
 
@@ -52,7 +62,7 @@ public class GpioController {
 
         Context pi4j = Pi4J.newAutoContext();
 
-        DigitalOutput output = pi4j.dout().create(gpioAddress);
+        DigitalOutput output = pi4j.dout().create(GPIO_ADDRESS);
         output.config().shutdownState(DigitalState.LOW);
 
         output.addListener(e -> {
@@ -75,10 +85,10 @@ public class GpioController {
                 map.put("error", "false");
 
                 try {
-                    var body = new PostSender().sendPostRequest(map);
+                    var body = new PostSender().sendPostRequest(WEB_SERVER_URL, map);
                     console.print(body);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    console.print(e);
                 }
                 return;
             }

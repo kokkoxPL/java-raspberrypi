@@ -21,6 +21,8 @@
 
         <java.version>17</java.version>
 
+        <jar.finalName>test</jar.finalName>
+
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
@@ -32,6 +34,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.adrianpl</groupId>
+            <artifactId>modbus-and-snmp</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -63,18 +71,6 @@
         </dependency>
 
         <dependency>
-            <groupId>de.re.easymodbus</groupId>
-            <artifactId>modbus</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.snmp4j</groupId>
-            <artifactId>snmp4j</artifactId>
-            <version>3.7.7</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.5</version>
@@ -82,6 +78,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -98,6 +95,12 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.adrianpl</groupId>
+                <artifactId>modbus-and-snmp</artifactId>
+                <version>1.0</version>
             </plugin>
 
             <plugin>
@@ -122,18 +125,6 @@
                 <groupId>com.pi4j</groupId>
                 <artifactId>pi4j-plugin-pigpio</artifactId>
                 <version>${pi4j.version}</version>
-            </plugin>
-
-            <plugin>
-                <groupId>de.re.easymodbus</groupId>
-                <artifactId>modbus</artifactId>
-                <version>1.0</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.snmp4j</groupId>
-                <artifactId>snmp4j</artifactId>
-                <version>3.7.7</version>
             </plugin>
 
             <plugin>

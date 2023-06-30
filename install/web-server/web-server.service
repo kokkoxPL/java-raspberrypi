@@ -1,0 +1,13 @@
+[Unit]
+Description=Web Server
+
+[Service]
+SuccessExitStatus=143
+
+Type=forking
+
+ExecStart=/usr/local/sbin/web-server.sh
+ExecStop=/bin/kill -15 $MAINPID
+
+[Install]
+WantedBy=multi-user.target

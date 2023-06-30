@@ -1,20 +1,35 @@
 # Program do testowania gpio w raspberry pi
 
-## Foldery:
+## Główne Foldery:
 
 - Gpio - główny program do testowania gpio
 - WebServer- program do komunikacji z głównym programem
+
+## Foldery do osobistych testów
+
 - ModbusClient - program do testowania modbusa
 - SnmpServer - program do testowania snmp
 
-### Gpio, WebServer, ModbusClient używają biblioteki którą można dodać do mavena za pomocą tego skryptu (skrypt uruchom będąc w tym folderze):
+## Instalacja (wymagane są uprawnienia root)
 
-`mvn install:install-file -Dfile=./lib/EasyModbusJava.jar -DgroupId=de.re.easymodbus -DartifactId=modbus -Dversion=1.0 -Dpackaging=jar`
+#### Pliki instaluje się jako serwis. Przed instalacją można zmienić właściwości serwisu w folderze install. Skrypt urachamia się będąc w tym folderze.
 
-każdy program kompiluje się za pomocą maven
+```bash
+chmod +x ./install.sh`
+./install.sh
+sudo systemctl daemon-reload
+```
 
-`mvn package`
+## Serwisy są pod nazwami gpio i web-server
 
-i uruchamia się:
+```bash
+sudo systemctl start gpio
+sudo systemctl start web-server
+```
 
-`sudo java -jar target/$plik`
+## Odinstalowanie (wymagane są uprawnienia root)
+
+```bash
+chmod +x ./uninstall.sh`
+./uninstall.sh
+```

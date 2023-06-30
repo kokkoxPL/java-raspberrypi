@@ -1,0 +1,13 @@
+[Unit]
+Description=Gpio
+
+[Service]
+SuccessExitStatus=143
+
+Type=forking
+
+ExecStart=/usr/local/sbin/gpio.sh
+ExecStop=/bin/kill -15 $MAINPID
+
+[Install]
+WantedBy=multi-user.target

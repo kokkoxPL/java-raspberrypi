@@ -15,19 +15,28 @@ import org.snmp4j.smi.VariableBinding;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 
 public class SnmpController {
-    private Address address = GenericAddress.parse("udp:127.0.0.1/161");
+    private final String SNMP_ADDRESS;
+    private final String VARIABLE_BINDING;
+
     private Snmp snmp;
     private PDU pdu;
     private Target<Address> target;
 
-    public SnmpController() {
+    public SnmpController(String SNMP_ADDRESS, String VARIABLE_BINDING) {
+        this.SNMP_ADDRESS = SNMP_ADDRESS;
+        this.VARIABLE_BINDING = VARIABLE_BINDING;
+
+        listen();
+    }
+
+    public void listen() {
         pdu = new PDU();
-        pdu.add(new VariableBinding(new OID("1.3.6.1.2.1.1.2")));
+        pdu.add(new VariableBinding(new OID(VARIABLE_BINDING)));
         pdu.setType(PDU.GETNEXT);
 
         target = new CommunityTarget<Address>();
         ((CommunityTarget<Address>) target).setCommunity(new OctetString("public"));
-        target.setAddress(address);
+        target.setAddress(GenericAddress.parse(SNMP_ADDRESS));
         target.setRetries(2);
         target.setTimeout(500);
         target.setVersion(SnmpConstants.version2c);
