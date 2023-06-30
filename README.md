@@ -15,7 +15,7 @@
 #### Pliki instaluje się jako serwis. Przed instalacją można zmienić właściwości serwisu w folderze install. Skrypt urachamia się będąc w tym folderze.
 
 ```bash
-chmod +x ./install.sh`
+chmod +x ./install.sh
 ./install.sh
 sudo systemctl daemon-reload
 ```
@@ -30,6 +30,6 @@ sudo systemctl start web-server
 ## Odinstalowanie (wymagane są uprawnienia root)
 
 ```bash
-chmod +x ./uninstall.sh`
+chmod +x ./uninstall.sh
 ./uninstall.sh
 ```
